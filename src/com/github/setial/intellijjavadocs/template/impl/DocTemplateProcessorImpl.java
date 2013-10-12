@@ -2,7 +2,7 @@ package com.github.setial.intellijjavadocs.template.impl;
 
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
-import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.ApplicationComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -19,17 +19,7 @@ import java.util.Map;
  *
  * @author Sergey Timofiychuk
  */
-public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectComponent {
-
-    // TODO move the logic to utils classes
-
-    @Override
-    public void projectOpened() {
-    }
-
-    @Override
-    public void projectClosed() {
-    }
+public class DocTemplateProcessorImpl implements DocTemplateProcessor, ApplicationComponent {
 
     @Override
     public void initComponent() {

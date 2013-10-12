@@ -56,9 +56,10 @@
             <interface-class>com.github.setial.intellijjavadocs.operation.JavaDocWriter</interface-class>
             <implementation-class>com.github.setial.intellijjavadocs.operation.impl.JavaDocWriterImpl</implementation-class>
         </component>
-    </application-components>
-
-    <project-components>
+        <component>
+            <interface-class>com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration</interface-class>
+            <implementation-class>com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl</implementation-class>
+        </component>
         <component>
             <interface-class>com.github.setial.intellijjavadocs.template.DocTemplateManager</interface-class>
             <implementation-class>com.github.setial.intellijjavadocs.template.impl.DocTemplateManagerImpl</implementation-class>
@@ -67,10 +68,9 @@
             <interface-class>com.github.setial.intellijjavadocs.template.DocTemplateProcessor</interface-class>
             <implementation-class>com.github.setial.intellijjavadocs.template.impl.DocTemplateProcessorImpl</implementation-class>
         </component>
-        <component>
-            <interface-class>com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration</interface-class>
-            <implementation-class>com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl</implementation-class>
-        </component>
+    </application-components>
+
+    <project-components>
     </project-components>
 
     <actions>
