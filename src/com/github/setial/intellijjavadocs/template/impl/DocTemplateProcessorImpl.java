@@ -87,4 +87,22 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, Applicati
         return result.toString();
     }
 
+    @NotNull
+    @Override
+    public String buildFieldDescription(@NotNull String description) {
+        if (StringUtils.isBlank(description)) {
+            return StringUtils.EMPTY;
+        }
+
+        String[] parts = StringUtils.splitByCharacterTypeCamelCase(description.replaceAll("<.+>", ""));
+        StringBuilder result = new StringBuilder();
+        for (int i = 1; i < parts.length; i++) {
+            if (i > 1) {
+                result.append(StringUtils.capitalize(parts[i]));
+            } else {
+                result.append(StringUtils.uncapitalize(parts[i]));
+            }
+        }
+        return result.toString();
+    }
 }
