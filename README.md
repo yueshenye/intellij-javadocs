@@ -13,4 +13,6 @@ Last plugin deployment jar: https://github.com/setial/intellij-javadocs/raw/mast
 * introduce a new template variable $fieldName for getters and setters.
 * make the settings global and exportable.
 
+BTW, the useless javadoc comments is really boring and useless (as it's name suggests), but sometimes, you are forced(fucked) to write them, use this plugin to make your life easier.
+
 enjoy it.
