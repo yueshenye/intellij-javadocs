@@ -22,6 +22,7 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.PsiTypeElement;
+import com.intellij.psi.util.TypeConversionUtil;
 
 /**
  * The type Method java doc generator.
@@ -67,10 +68,11 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
                     new Function<PsiParameter, String>() {
                         @Override
                         public String apply(@Nullable PsiParameter psiParameter) {
-                            if (psiParameter.getType().getCanonicalText().startsWith("java.lang")) {
-                                return psiParameter.getType().getPresentableText();
+                            PsiType type = TypeConversionUtil.erasure(psiParameter.getType());
+                            if (type.getCanonicalText().startsWith("java.lang")) {
+                                return type.getPresentableText();
                             } else {
-                                return psiParameter.getType().getCanonicalText();
+                                return type.getCanonicalText();
                             }
                         }
                     })));
