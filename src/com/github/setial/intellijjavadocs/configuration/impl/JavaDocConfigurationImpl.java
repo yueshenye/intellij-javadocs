@@ -6,18 +6,11 @@ import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
-import com.github.setial.intellijjavadocs.ui.settings.ConfigPanel;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.components.*;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import org.jdom.Element;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,20 +21,14 @@ import java.util.Set;
  */
 @State(
         name = JavaDocConfiguration.COMPONENT_NAME,
-        storages = {
-                @Storage(
-                        id = "other",
-                        file = StoragePathMacros.APP_CONFIG + "/javaDoc.xml"
-                )
-        }
+        storages = {@Storage("JavaDoc.xml")}
 )
-public class JavaDocConfigurationImpl implements JavaDocConfiguration, ApplicationComponent, Configurable,
-        PersistentStateComponent<Element>, ExportableApplicationComponent {
+public class JavaDocConfigurationImpl implements JavaDocConfiguration, ApplicationComponent, PersistentStateComponent<Element> {
 
     private JavaDocSettings settings;
-    private ConfigPanel configPanel;
-    private DocTemplateManager templateManager;
     private boolean loadedStoredConfig = false;
+
+    private DocTemplateManager templateManager;
 
     /**
      * Instantiates a new Java doc configuration object.
@@ -58,54 +45,11 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Applicati
     public void disposeComponent() {
     }
 
-    @Nls
-    @Override
-    public String getDisplayName() {
-        return "JavaDoc";
-    }
-
-    @Nullable
-    @Override
-    public String getHelpTopic() {
-        return null;
-    }
 
     @NotNull
     @Override
     public String getComponentName() {
         return COMPONENT_NAME;
-    }
-
-    @Nullable
-    @Override
-    public JComponent createComponent() {
-        if (configPanel == null) {
-            configPanel = new ConfigPanel(getSettings());
-        }
-        reset();
-        return configPanel;
-    }
-
-    @Override
-    public boolean isModified() {
-        return configPanel.isModified();
-    }
-
-    @Override
-    public void apply() throws ConfigurationException {
-        configPanel.apply();
-        setupTemplates();
-    }
-
-    @Override
-    public void reset() {
-        configPanel.reset();
-    }
-
-    @Override
-    public void disposeUIResources() {
-        configPanel.disposeUIResources();
-        configPanel = null;
     }
 
     @Override
@@ -118,6 +62,12 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Applicati
             result = null;
         }
         return result;
+    }
+
+    @Override
+    public void updateConfiguration(JavaDocSettings javaDocSettings) {
+        this.settings = javaDocSettings;
+        setupTemplates();
     }
 
     @Nullable
@@ -170,19 +120,5 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Applicati
         templateManager.setConstructorTemplates(settings.getTemplateSettings().getConstructorTemplates());
         templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
         templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
-    }
-
-    @NotNull
-    @Override
-    public File[] getExportFiles() {
-        return new File[]{
-                PathManager.getOptionsFile("javaDoc")
-        };
-    }
-
-    @NotNull
-    @Override
-    public String getPresentableName() {
-        return "JavaDoc Settings";
     }
 }

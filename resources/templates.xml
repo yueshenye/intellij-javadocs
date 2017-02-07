@@ -51,7 +51,7 @@
         <template regexp="^.*(public|protected|private)*\s*.*(void|\w(\s*&lt;.+&gt;)*)+\s+set\w+\s*\(.*\).+">
 /**\n
  * Setter for property $fieldName.\n
- * @param $parameter.name the new value.\n
+ * @param $fieldName the new value.\n
  */
         </template>
         <template regexp="^.*((public\s+static)|(static\s+public))\s+void\s+main\s*\(\s*String\s*(\[\s*\]|\.\.\.)\s+\w+\s*\).+">
