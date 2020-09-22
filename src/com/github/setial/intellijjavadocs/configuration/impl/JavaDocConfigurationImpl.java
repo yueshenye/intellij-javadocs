@@ -6,22 +6,11 @@ import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
-import com.github.setial.intellijjavadocs.ui.settings.ConfigPanel;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.components.*;
 import org.jdom.Element;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,28 +21,20 @@ import java.util.Set;
  */
 @State(
         name = JavaDocConfiguration.COMPONENT_NAME,
-        storages = {
-                @Storage(
-                        id = "other",
-                        file = StoragePathMacros.PROJECT_FILE
-                )
-        }
+        storages = {@Storage("JavaDoc.xml")}
 )
-public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectComponent, Configurable,
-        PersistentStateComponent<Element> {
+public class JavaDocConfigurationImpl implements JavaDocConfiguration, ApplicationComponent, PersistentStateComponent<Element> {
 
     private JavaDocSettings settings;
-    private ConfigPanel configPanel;
-    private DocTemplateManager templateManager;
     private boolean loadedStoredConfig = false;
+
+    private DocTemplateManager templateManager;
 
     /**
      * Instantiates a new Java doc configuration object.
-     *
-     * @param project the opened project
      */
-    public JavaDocConfigurationImpl(Project project) {
-        templateManager = ServiceManager.getService(project, DocTemplateManager.class);
+    public JavaDocConfigurationImpl() {
+        templateManager = ServiceManager.getService(DocTemplateManager.class);
     }
 
     @Override
@@ -64,62 +45,11 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     public void disposeComponent() {
     }
 
-    @Nls
-    @Override
-    public String getDisplayName() {
-        return "JavaDoc";
-    }
-
-    @Nullable
-    @Override
-    public String getHelpTopic() {
-        return null;
-    }
-
-    @Override
-    public void projectOpened() {
-    }
-
-    @Override
-    public void projectClosed() {
-    }
 
     @NotNull
     @Override
     public String getComponentName() {
         return COMPONENT_NAME;
-    }
-
-    @Nullable
-    @Override
-    public JComponent createComponent() {
-        if (configPanel == null) {
-            configPanel = new ConfigPanel(getSettings());
-        }
-        reset();
-        return configPanel;
-    }
-
-    @Override
-    public boolean isModified() {
-        return configPanel.isModified();
-    }
-
-    @Override
-    public void apply() throws ConfigurationException {
-        configPanel.apply();
-        setupTemplates();
-    }
-
-    @Override
-    public void reset() {
-        configPanel.reset();
-    }
-
-    @Override
-    public void disposeUIResources() {
-        configPanel.disposeUIResources();
-        configPanel = null;
     }
 
     @Override
@@ -132,6 +62,12 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
             result = null;
         }
         return result;
+    }
+
+    @Override
+    public void updateConfiguration(JavaDocSettings javaDocSettings) {
+        this.settings = javaDocSettings;
+        setupTemplates();
     }
 
     @Nullable
@@ -185,5 +121,4 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
         templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
         templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
     }
-
 }

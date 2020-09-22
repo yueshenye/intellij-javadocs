@@ -49,4 +49,12 @@ public interface DocTemplateProcessor {
     @NotNull
     String buildPartialDescription(@NotNull String description);
 
+    /**
+     * Builds the description for the field of getter, setter. There will be removed the first word, e.g. get, set, etc,
+     * and join the rest works with Camel style.
+     *
+     * @param description the description
+     * @return generated description
+     */
+    String buildFieldDescription(@NotNull String description);
 }

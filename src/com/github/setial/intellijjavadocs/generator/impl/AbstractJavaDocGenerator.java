@@ -20,6 +20,7 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -138,10 +139,14 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
      */
     protected Map<String, Object> getDefaultParameters(PomNamedTarget element) {
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("dollar", "$");
         params.put("element", element);
         params.put("name", getDocTemplateProcessor().buildDescription(element.getName(), true));
         params.put("partName", getDocTemplateProcessor().buildPartialDescription(element.getName()));
+        params.put("fieldName", getDocTemplateProcessor().buildFieldDescription(element.getName()));
         params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
+        params.put("date", DateTime.now().toString("yyyy-MM-dd"));
+        params.put("time", DateTime.now().toString("ah:mm:ss"));
         return params;
     }
 

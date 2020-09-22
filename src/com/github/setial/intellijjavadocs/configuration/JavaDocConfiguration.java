@@ -21,4 +21,5 @@ public interface JavaDocConfiguration {
     @Nullable
     JavaDocSettings getConfiguration();
 
+    void updateConfiguration(JavaDocSettings javaDocSettings);
 }
